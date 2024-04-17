@@ -21,7 +21,7 @@ class CatalogueConsommable
         value: 0,
         message: 'Le prix devrait être supérieur ou égal à 0.'
     )]
-    private ?float $prix = 0;
+    private ?string $prix = '0.00';
 
     #[ORM\ManyToOne(inversedBy: 'catalogueConsommables')]
     #[ORM\JoinColumn(nullable: false)]
@@ -37,11 +37,12 @@ class CatalogueConsommable
     }
 
     public function getPrix(): ?float
+    // return the price as float
     {
         return $this->prix;
     }
 
-    public function setPrix(float $prix): static
+    public function setPrix(string $prix): static
     {
         $this->prix = $prix;
 

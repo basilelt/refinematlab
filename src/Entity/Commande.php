@@ -21,7 +21,7 @@ class Commande
         value: 0,
         message: 'Le prix unitaire devrait être supérieur ou égal à 0.'
     )]
-    private ?float $prix_unitaire = 0;
+    private ?string $prix_unitaire = '0.00';
 
     #[ORM\Column(type: Types::SMALLINT)]
     #[Assert\GreaterThanOrEqual(
@@ -68,11 +68,12 @@ class Commande
     }
 
     public function getPrixUnitaire(): ?float
+    // return the price as a float
     {
         return $this->prix_unitaire;
     }
 
-    public function setPrixUnitaire(float $prix_unitaire): static
+    public function setPrixUnitaire(string $prix_unitaire): static
     {
         $this->prix_unitaire = $prix_unitaire;
 

@@ -37,7 +37,7 @@ class Intervention
     #[ORM\Column(length: 260, nullable: true)]
     private ?string $rapport = null;
 
-    #[ORM\ManyToOne(inversedBy: 'interventions')]
+    #[ORM\ManyToOne(inversedBy: 'interventions_responsable')]
     private ?Personne $id_responsable = null;
 
     #[ORM\ManyToOne(inversedBy: 'interventions')]

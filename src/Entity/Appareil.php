@@ -44,7 +44,7 @@ class Appareil
         value: 0,
         message: 'Le prix devrait être supérieur ou égal à 0.'
     )]
-    private ?float $prix_achat = 0;
+    private ?string $prix_achat = '0.00';
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $numero_inventaire_interne = null;
@@ -64,7 +64,7 @@ class Appareil
     #[ORM\ManyToOne(inversedBy: 'appareils')]
     private ?Personne $id_responsable = null;
 
-    #[ORM\ManyToOne(inversedBy: 'appareils')]
+    #[ORM\ManyToOne(inversedBy: 'appareils_constructeur')]
     private ?Entreprise $id_entreprise_constructeur = null;
 
     #[ORM\ManyToOne(inversedBy: 'appareils_vendeur')]
@@ -168,11 +168,12 @@ class Appareil
     }
 
     public function getPrixAchat(): ?float
+    // return the price as a float
     {
         return $this->prix_achat;
     }
 
-    public function setPrixAchat(?float $prix_achat): static
+    public function setPrixAchat(?string $prix_achat): static
     {
         $this->prix_achat = $prix_achat;
 
