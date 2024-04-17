@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExterneInterneRepository::class)]
+#[ORM\Table(name: "externe_interne")]
 class ExterneInterne
 {
     #[ORM\Id]

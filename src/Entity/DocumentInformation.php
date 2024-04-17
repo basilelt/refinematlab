@@ -6,6 +6,7 @@ use App\Repository\DocumentInformationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DocumentInformationRepository::class)]
+#[ORM\Table(name: "document_information")]
 class DocumentInformation
 {
     #[ORM\Id]

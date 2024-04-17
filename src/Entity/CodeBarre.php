@@ -6,6 +6,7 @@ use App\Repository\CodeBarreRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CodeBarreRepository::class)]
+#[ORM\Table(name: 'code_barre')]
 class CodeBarre
 {
     #[ORM\Id]
@@ -13,7 +14,7 @@ class CodeBarre
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     private ?string $code = null;
 
     #[ORM\ManyToOne(inversedBy: 'codeBarres')]

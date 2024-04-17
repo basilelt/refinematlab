@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ConsommableRepository::class)]
+#[ORM\Table(name: 'consommable')]
 class Consommable
 {
     #[ORM\Id]
@@ -25,14 +27,18 @@ class Consommable
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $dimension = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $quantite_par_lot = null;
+    #[ORM\Column(type: Types:: SMALLINT, nullable: true)]
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'La quantité par lot doit être supérieure ou égale à 0'
+    )]
+    private ?int $quantite_par_lot = 0;
 
     #[ORM\Column(nullable: true)]
-    private ?int $seuil = null;
+    private ?int $seuil = 0;
 
     #[ORM\Column(nullable: true)]
-    private ?int $stock = null;
+    private ?int $stock = 0;
 
     /**
      * @var Collection<int, DocumentFinancier>

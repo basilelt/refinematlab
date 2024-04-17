@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\CommandeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
+#[ORM\Table(name: 'commande')]
 class Commande
 {
     #[ORM\Id]
@@ -15,18 +17,36 @@ class Commande
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $prix_unitaire = null;
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'Le prix unitaire devrait être supérieur ou égal à 0.'
+    )]
+    private ?float $prix_unitaire = 0;
 
-    #[ORM\Column]
-    private ?int $nombre_lot = null;
+    #[ORM\Column(type: Types::SMALLINT)]
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'Le nombre de lot devrait être supérieur ou égal à 0.'
+    )]
+    private ?int $nombre_lot = 0;
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
-    private ?\DateTimeInterface $date_commande = null;
+    #[Assert\Range(
+        min: '1950-01-01',
+        max: 'today',
+        notInRangeMessage: "La date devrait être comprise entre 1950-01-01 et aujourd'hui."
+    )]
+    private ?\DateTimeInterface $date_commande;
 
     #[ORM\Column]
-    private ?bool $reception = null;
+    private ?bool $reception = false;
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: true)]
+    #[Assert\Range(
+        min: '1950-01-01',
+        max: 'today',
+        notInRangeMessage: "La date devrait être comprise entre 1950-01-01 et aujourd'hui."
+    )]
     private ?\DateTimeInterface $date_reception = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
@@ -37,17 +57,22 @@ class Commande
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprise $id_entreprise = null;
 
+    public function __construct()
+    {
+        $this->date_commande = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPrixUnitaire(): ?string
+    public function getPrixUnitaire(): ?float
     {
         return $this->prix_unitaire;
     }
 
-    public function setPrixUnitaire(string $prix_unitaire): static
+    public function setPrixUnitaire(float $prix_unitaire): static
     {
         $this->prix_unitaire = $prix_unitaire;
 
@@ -98,7 +123,13 @@ class Commande
     public function setDateReception(?\DateTimeInterface $date_reception): static
     {
         $this->date_reception = $date_reception;
-
+    
+        if ($this->reception && $this->date_reception && $this->date_reception <= new \DateTime()) {
+            $this->id_consommable->setStock(
+                $this->id_consommable->getStock() + $this->nombre_lot * $this->id_consommable->getQuantiteParLot()
+            );
+        }
+    
         return $this;
     }
 

@@ -6,6 +6,7 @@ use App\Repository\DocumentFinancierRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DocumentFinancierRepository::class)]
+#[ORM\Table(name: "document_financier")]
 class DocumentFinancier
 {
     #[ORM\Id]

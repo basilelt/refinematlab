@@ -8,6 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
+#[ORM\Table(
+    name: "region",
+    uniqueConstraints: [
+        new ORM\UniqueConstraint(name: "idx_region_id_pays_nom", columns: ["id_pays", "nom"])
+    ]
+)]
 class Region
 {
     #[ORM\Id]

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
+#[ORM\Table(name: "personne")]
 class Personne
 {
     #[ORM\Id]
@@ -179,8 +180,16 @@ class Personne
 
     public function setIdExterneInterne(?ExterneInterne $id_externe_interne): static
     {
+        if ($id_externe_interne->getType() === 'interne' && $this->id_entreprise !== null) {
+            throw new \InvalidArgumentException('id_entreprise doit être NULL pour id_externe_interne interne');
+        }
+    
+        if ($id_externe_interne->getType() === 'externe' && $this->id_entreprise === null) {
+            throw new \InvalidArgumentException('id_entreprise ne doit pas être NULL pour id_externe_interne externe');
+        }
+    
         $this->id_externe_interne = $id_externe_interne;
-
+    
         return $this;
     }
 
@@ -191,6 +200,16 @@ class Personne
 
     public function setIdEntreprise(?Entreprise $id_entreprise): static
     {
+        if ($this->id_externe_interne !== null) {
+            if ($this->id_externe_interne->getType() === 'interne' && $id_entreprise !== null) {
+                throw new \InvalidArgumentException('id_entreprise doit être NULL pour id_externe_interne interne');
+            }
+
+            if ($this->id_externe_interne->getType() === 'externe' && $id_entreprise === null) {
+                throw new \InvalidArgumentException('id_entreprise ne doit pas être NULL pour id_externe_interne externe');
+            }
+        }
+
         $this->id_entreprise = $id_entreprise;
 
         return $this;

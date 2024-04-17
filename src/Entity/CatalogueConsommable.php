@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\CatalogueConsommableRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CatalogueConsommableRepository::class)]
+#[ORM\Table(name: 'catalogue_consommable')] 
 class CatalogueConsommable
 {
     #[ORM\Id]
@@ -15,7 +17,11 @@ class CatalogueConsommable
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $prix = null;
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'Le prix devrait être supérieur ou égal à 0.'
+    )]
+    private ?float $prix = 0;
 
     #[ORM\ManyToOne(inversedBy: 'catalogueConsommables')]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,12 +36,12 @@ class CatalogueConsommable
         return $this->id;
     }
 
-    public function getPrix(): ?string
+    public function getPrix(): ?float
     {
         return $this->prix;
     }
 
-    public function setPrix(string $prix): static
+    public function setPrix(float $prix): static
     {
         $this->prix = $prix;
 

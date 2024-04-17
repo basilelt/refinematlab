@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MarqueRepository::class)]
+#[ORM\Table(name: "marque")]
 class Marque
 {
     #[ORM\Id]
@@ -15,7 +16,7 @@ class Marque
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 70)]
+    #[ORM\Column(length: 70, unique: true)]
     private ?string $nom = null;
 
     /**

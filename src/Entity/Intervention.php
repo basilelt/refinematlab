@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InterventionRepository::class)]
+#[ORM\Table(name: 'intervention')]
 class Intervention
 {
     #[ORM\Id]
@@ -17,9 +19,19 @@ class Intervention
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
-    private ?\DateTimeInterface $date_debut = null;
+    #[Assert\Range(
+        min: '1950-01-01',
+        max: 'today',
+        notInRangeMessage: "La date devrait être comprise entre 1950-01-01 et aujourd'hui."
+    )]
+    private ?\DateTimeInterface $date_debut;
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: true)]
+    #[Assert\Range(
+        min: '1950-01-01',
+        max: 'today',
+        notInRangeMessage: "La date devrait être comprise entre 1950-01-01 et aujourd'hui."
+    )]
     private ?\DateTimeInterface $date_fin = null;
 
     #[ORM\Column(length: 260, nullable: true)]
@@ -60,6 +72,7 @@ class Intervention
     {
         $this->documentFinanciers = new ArrayCollection();
         $this->personnes = new ArrayCollection();
+        $this->date_debut = new \DateTime();
     }
 
     public function getId(): ?int

@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AppareilRepository::class)]
+#[ORM\Table(name: "appareil")]
 class Appareil
 {
     #[ORM\Id]
@@ -30,10 +32,19 @@ class Appareil
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $date_achat = null;
+    #[Assert\Range(
+        min: '1950-01-01',
+        max: 'today',
+        notInRangeMessage: "La date devrait être comprise entre 1950-01-01 et aujourd'hui."
+    )]
+    private ?\DateTimeInterface $date_achat;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $prix_achat = null;
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'Le prix devrait être supérieur ou égal à 0.'
+    )]
+    private ?float $prix_achat = 0;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $numero_inventaire_interne = null;
@@ -88,6 +99,7 @@ class Appareil
         $this->photos = new ArrayCollection();
         $this->interventions = new ArrayCollection();
         $this->documentInformation = new ArrayCollection();
+        $this->date_achat = new \DateTime();
     }
 
     public function getId(): ?int
@@ -155,12 +167,12 @@ class Appareil
         return $this;
     }
 
-    public function getPrixAchat(): ?string
+    public function getPrixAchat(): ?float
     {
         return $this->prix_achat;
     }
 
-    public function setPrixAchat(?string $prix_achat): static
+    public function setPrixAchat(?float $prix_achat): static
     {
         $this->prix_achat = $prix_achat;
 

@@ -5,9 +5,12 @@ namespace App\Entity;
 use App\Repository\PaysRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PaysRepository::class)]
+#[ORM\Table(name: 'pays')]
 class Pays
 {
     #[ORM\Id]
@@ -15,19 +18,24 @@ class Pays
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::SMALLINT, nullable: true, unique: true)]
+    #[Assert\Range(
+        min: 1,
+        max: 999,
+        notInRangeMessage: 'Le code numérique devrait être compris entre 1 et 999.'
+    )]
     private ?int $code_num = null;
 
-    #[ORM\Column(length: 2, nullable: true)]
+    #[ORM\Column(length: 2, nullable: true, unique: true)]
     private ?string $code_alpha2 = null;
 
-    #[ORM\Column(length: 3, nullable: true)]
+    #[ORM\Column(length: 3, nullable: true, unique: true)]
     private ?string $code_alpha3 = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
     private ?string $nom_francais = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
     private ?string $nom_anglais = null;
 
     /**
