@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AppareilRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,6 +49,46 @@ class Appareil
 
     #[ORM\Column(length: 260, nullable: true)]
     private ?string $fiche_securite = null;
+
+    #[ORM\ManyToOne(inversedBy: 'appareils')]
+    private ?Personne $id_responsable = null;
+
+    #[ORM\ManyToOne(inversedBy: 'appareils')]
+    private ?Entreprise $id_entreprise_constructeur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'appareils_vendeur')]
+    private ?Entreprise $id_entrprise_vendeur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'appareils')]
+    private ?LocalisationLabo $id_localisation_labo = null;
+
+    #[ORM\ManyToOne(inversedBy: 'appareils')]
+    private ?Fonction $id_fonction = null;
+
+    /**
+     * @var Collection<int, Photo>
+     */
+    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'id_appareil')]
+    private Collection $photos;
+
+    /**
+     * @var Collection<int, Intervention>
+     */
+    #[ORM\OneToMany(targetEntity: Intervention::class, mappedBy: 'id_appareil')]
+    private Collection $interventions;
+
+    /**
+     * @var Collection<int, DocumentInformation>
+     */
+    #[ORM\OneToMany(targetEntity: DocumentInformation::class, mappedBy: 'id_appareil')]
+    private Collection $documentInformation;
+
+    public function __construct()
+    {
+        $this->photos = new ArrayCollection();
+        $this->interventions = new ArrayCollection();
+        $this->documentInformation = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -181,6 +223,156 @@ class Appareil
     public function setFicheSecurite(?string $fiche_securite): static
     {
         $this->fiche_securite = $fiche_securite;
+
+        return $this;
+    }
+
+    public function getIdResponsable(): ?Personne
+    {
+        return $this->id_responsable;
+    }
+
+    public function setIdResponsable(?Personne $id_responsable): static
+    {
+        $this->id_responsable = $id_responsable;
+
+        return $this;
+    }
+
+    public function getIdEntrepriseConstructeur(): ?Entreprise
+    {
+        return $this->id_entreprise_constructeur;
+    }
+
+    public function setIdEntrepriseConstructeur(?Entreprise $id_entreprise_constructeur): static
+    {
+        $this->id_entreprise_constructeur = $id_entreprise_constructeur;
+
+        return $this;
+    }
+
+    public function getIdEntrpriseVendeur(): ?Entreprise
+    {
+        return $this->id_entrprise_vendeur;
+    }
+
+    public function setIdEntrpriseVendeur(?Entreprise $id_entrprise_vendeur): static
+    {
+        $this->id_entrprise_vendeur = $id_entrprise_vendeur;
+
+        return $this;
+    }
+
+    public function getIdLocalisationLabo(): ?LocalisationLabo
+    {
+        return $this->id_localisation_labo;
+    }
+
+    public function setIdLocalisationLabo(?LocalisationLabo $id_localisation_labo): static
+    {
+        $this->id_localisation_labo = $id_localisation_labo;
+
+        return $this;
+    }
+
+    public function getIdFonction(): ?Fonction
+    {
+        return $this->id_fonction;
+    }
+
+    public function setIdFonction(?Fonction $id_fonction): static
+    {
+        $this->id_fonction = $id_fonction;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Photo>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photo $photo): static
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos->add($photo);
+            $photo->setIdAppareil($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photo $photo): static
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getIdAppareil() === $this) {
+                $photo->setIdAppareil(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Intervention>
+     */
+    public function getInterventions(): Collection
+    {
+        return $this->interventions;
+    }
+
+    public function addIntervention(Intervention $intervention): static
+    {
+        if (!$this->interventions->contains($intervention)) {
+            $this->interventions->add($intervention);
+            $intervention->setIdAppareil($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntervention(Intervention $intervention): static
+    {
+        if ($this->interventions->removeElement($intervention)) {
+            // set the owning side to null (unless already changed)
+            if ($intervention->getIdAppareil() === $this) {
+                $intervention->setIdAppareil(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DocumentInformation>
+     */
+    public function getDocumentInformation(): Collection
+    {
+        return $this->documentInformation;
+    }
+
+    public function addDocumentInformation(DocumentInformation $documentInformation): static
+    {
+        if (!$this->documentInformation->contains($documentInformation)) {
+            $this->documentInformation->add($documentInformation);
+            $documentInformation->setIdAppareil($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocumentInformation(DocumentInformation $documentInformation): static
+    {
+        if ($this->documentInformation->removeElement($documentInformation)) {
+            // set the owning side to null (unless already changed)
+            if ($documentInformation->getIdAppareil() === $this) {
+                $documentInformation->setIdAppareil(null);
+            }
+        }
 
         return $this;
     }

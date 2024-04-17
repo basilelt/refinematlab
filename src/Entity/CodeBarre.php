@@ -16,6 +16,10 @@ class CodeBarre
     #[ORM\Column(length: 50)]
     private ?string $code = null;
 
+    #[ORM\ManyToOne(inversedBy: 'codeBarres')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Consommable $id_consommable = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +33,18 @@ class CodeBarre
     public function setCode(string $code): static
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getIdConsommable(): ?Consommable
+    {
+        return $this->id_consommable;
+    }
+
+    public function setIdConsommable(?Consommable $id_consommable): static
+    {
+        $this->id_consommable = $id_consommable;
 
         return $this;
     }

@@ -16,6 +16,10 @@ class Photo
     #[ORM\Column(length: 260)]
     private ?string $photo = null;
 
+    #[ORM\ManyToOne(inversedBy: 'photos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Appareil $id_appareil = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +33,18 @@ class Photo
     public function setPhoto(string $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getIdAppareil(): ?Appareil
+    {
+        return $this->id_appareil;
+    }
+
+    public function setIdAppareil(?Appareil $id_appareil): static
+    {
+        $this->id_appareil = $id_appareil;
 
         return $this;
     }
