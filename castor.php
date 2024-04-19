@@ -24,7 +24,7 @@ import(__DIR__ . '/.castor');
  */
 function create_default_variables(): array
 {
-    $projectName = 'app';
+    $projectName = 'refinematlab';
     $tld = 'test';
 
     return [
@@ -36,6 +36,8 @@ function create_default_variables(): array
         'php_version' => $_SERVER['DS_PHP_VERSION'] ?? '8.3',
     ];
 }
+
+
 
 #[AsTask(description: 'Builds and starts the infrastructure, then install the application (composer, yarn, ...)')]
 function start(): void
