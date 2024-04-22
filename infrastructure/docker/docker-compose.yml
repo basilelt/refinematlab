@@ -7,11 +7,7 @@ services:
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock"
             - "./services/router/certs:/etc/ssl/certs"
-        network_mode: "${PROJECT_NAME}_default"
-        ports:
-            - "80:80"
-            - "443:443"
-            - "8080:8080"
+        network_mode: host
         profiles:
             - default
 
