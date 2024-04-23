@@ -12,6 +12,7 @@ use function docker\build;
 use function docker\docker_compose_run;
 use function docker\generate_certificates;
 use function docker\up;
+
 // use function docker\workers_start;
 // use function docker\workers_stop;
 
@@ -24,7 +25,7 @@ import(__DIR__ . '/.castor');
  */
 function create_default_variables(): array
 {
-    $projectName = 'refinematlab';
+    $projectName = 'app';
     $tld = 'test';
 
     return [
@@ -36,8 +37,6 @@ function create_default_variables(): array
         'php_version' => $_SERVER['DS_PHP_VERSION'] ?? '8.3',
     ];
 }
-
-
 
 #[AsTask(description: 'Builds and starts the infrastructure, then install the application (composer, yarn, ...)')]
 function start(): void

@@ -1,9 +1,3 @@
 <?php
 
-use App\Kernel;
-
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
-
-return function (array $context) {
-    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
-};
+echo 'Hello world from PHP ', \PHP_MAJOR_VERSION, '.', \PHP_MINOR_VERSION, '.', \PHP_RELEASE_VERSION, " inside Docker! \n";

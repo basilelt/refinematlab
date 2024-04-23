@@ -13,7 +13,7 @@ basicConstraints=CA:true
 subjectAltName = @alt_names
 
 [dn]
-CN=refinematlab.test
+CN=app.test
 
 [alt_names]
-DNS.1 = refinematlab.test
+DNS.1 = app.test
