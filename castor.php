@@ -12,6 +12,7 @@ use function docker\build;
 use function docker\docker_compose_run;
 use function docker\generate_certificates;
 use function docker\up;
+
 // use function docker\workers_start;
 // use function docker\workers_stop;
 
@@ -24,7 +25,7 @@ import(__DIR__ . '/.castor');
  */
 function create_default_variables(): array
 {
-    $projectName = 'app';
+    $projectName = 'refinematlab';
     $tld = 'test';
 
     return [
@@ -32,6 +33,8 @@ function create_default_variables(): array
         'root_domain' => "{$projectName}.{$tld}",
         'extra_domains' => [
             "www.{$projectName}.{$tld}",
+            "admin.{$projectName}.{$tld}",
+            "api.{$projectName}.{$tld}",
         ],
         'php_version' => $_SERVER['DS_PHP_VERSION'] ?? '8.3',
     ];
