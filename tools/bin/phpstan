@@ -1,1 +1,1 @@
-../phpstan/vendor/bin/phpstan
+/var/www/tools/phpstan/vendor/bin/phpstan

@@ -1,0 +1,7 @@
+# Redirect test website of refinematlab to localhost
+127.0.0.1 refinematlab.test
+127.0.0.1 admin.refinematlab.test
+127.0.0.1 api.refinematlab.test
+127.0.0.1 www.refinematlab.test
+127.0.0.1 maildev.refinematlab.test
+127.0.0.1 encore.refinematlab.test
