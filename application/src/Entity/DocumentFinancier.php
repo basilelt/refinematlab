@@ -1,81 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\DocumentFinancierRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use App\Entity\Consommable;
+use App\Entity\Intervention;
 
 #[ORM\Entity(repositoryClass: DocumentFinancierRepository::class)]
 #[ORM\Table(name: "document_financier")]
 class DocumentFinancier
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\GeneratedValue('SEQUENCE')]
+    #[ORM\Column(type: Types::INTEGER)]
+    public readonly int $id;
 
-    #[ORM\Column(length: 200, nullable: true)]
-    private ?string $mode_financement = null;
+    public function __construct(
+        #[ORM\ManyToOne(targetEntity: Consommable::class)]
+        #[ORM\JoinColumn(nullable: true)]
+        public ?Consommable $id_consommable = null,
+    
+        #[ORM\ManyToOne(targetEntity: Intervention::class)]
+        #[ORM\JoinColumn(nullable: true)]
+        public ?Intervention $id_intervention = null,
+        
+        #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+        private ?string $mode_financement = null,
 
-    #[ORM\Column(length: 260, nullable: true)]
-    private ?string $document = null;
-
-    #[ORM\ManyToOne(inversedBy: 'documentFinanciers')]
-    private ?Consommable $id_consommable = null;
-
-    #[ORM\ManyToOne(inversedBy: 'documentFinanciers')]
-    private ?Intervention $id_intervention = null;
-
-    public function getId(): ?int
+        #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+        private ?string $document = null,
+    )
     {
-        return $this->id;
-    }
 
-    public function getModeFinancement(): ?string
-    {
-        return $this->mode_financement;
-    }
-
-    public function setModeFinancement(?string $mode_financement): static
-    {
-        $this->mode_financement = $mode_financement;
-
-        return $this;
-    }
-
-    public function getDocument(): ?string
-    {
-        return $this->document;
-    }
-
-    public function setDocument(?string $document): static
-    {
-        $this->document = $document;
-
-        return $this;
-    }
-
-    public function getIdConsommable(): ?Consommable
-    {
-        return $this->id_consommable;
-    }
-
-    public function setIdConsommable(?Consommable $id_consommable): static
-    {
-        $this->id_consommable = $id_consommable;
-
-        return $this;
-    }
-
-    public function getIdIntervention(): ?Intervention
-    {
-        return $this->id_intervention;
-    }
-
-    public function setIdIntervention(?Intervention $id_intervention): static
-    {
-        $this->id_intervention = $id_intervention;
-
-        return $this;
     }
 }

@@ -1,79 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\FonctionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: FonctionRepository::class)]
 #[ORM\Table(name: "fonction")]
 class Fonction
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\GeneratedValue('SEQUENCE')]
+    #[ORM\Column(type: Types::INTEGER)]
+    public readonly int $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $fonction = null;
-
-    /**
-     * @var Collection<int, Appareil>
-     */
-    #[ORM\OneToMany(targetEntity: Appareil::class, mappedBy: 'id_fonction')]
-    private Collection $appareils;
-
-    public function __construct()
+    public function __construct(
+        #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]
+        private string $fonction,
+    )
     {
-        $this->appareils = new ArrayCollection();
-    }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getFonction(): ?string
-    {
-        return $this->fonction;
-    }
-
-    public function setFonction(string $fonction): static
-    {
-        $this->fonction = $fonction;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Appareil>
-     */
-    public function getAppareils(): Collection
-    {
-        return $this->appareils;
-    }
-
-    public function addAppareil(Appareil $appareil): static
-    {
-        if (!$this->appareils->contains($appareil)) {
-            $this->appareils->add($appareil);
-            $appareil->setIdFonction($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAppareil(Appareil $appareil): static
-    {
-        if ($this->appareils->removeElement($appareil)) {
-            // set the owning side to null (unless already changed)
-            if ($appareil->getIdFonction() === $this) {
-                $appareil->setIdFonction(null);
-            }
-        }
-
-        return $this;
     }
 }

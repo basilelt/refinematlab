@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\RegionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use App\Entity\Pays;
 
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
 #[ORM\Table(
@@ -17,84 +19,19 @@ use Doctrine\ORM\Mapping as ORM;
 class Region
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\GeneratedValue('SEQUENCE')]
+    #[ORM\Column(type: Types::INTEGER)]
+    public readonly int $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    public function __construct(
+        #[ORM\ManyToOne(targetEntity: Pays::class)]
+        #[ORM\JoinColumn(nullable: false)]
+        public Pays $id_pays,
 
-    /**
-     * @var Collection<int, CodePostal>
-     */
-    #[ORM\OneToMany(targetEntity: CodePostal::class, mappedBy: 'id_region')]
-    private Collection $codePostals;
-
-    #[ORM\ManyToOne(inversedBy: 'regions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Pays $id_pays = null;
-
-    public function __construct()
+        #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]
+        public string $nom,
+    )
     {
-        $this->codePostals = new ArrayCollection();
-    }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): static
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CodePostal>
-     */
-    public function getCodePostals(): Collection
-    {
-        return $this->codePostals;
-    }
-
-    public function addCodePostal(CodePostal $codePostal): static
-    {
-        if (!$this->codePostals->contains($codePostal)) {
-            $this->codePostals->add($codePostal);
-            $codePostal->setIdRegion($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCodePostal(CodePostal $codePostal): static
-    {
-        if ($this->codePostals->removeElement($codePostal)) {
-            // set the owning side to null (unless already changed)
-            if ($codePostal->getIdRegion() === $this) {
-                $codePostal->setIdRegion(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getIdPays(): ?Pays
-    {
-        return $this->id_pays;
-    }
-
-    public function setIdPays(?Pays $id_pays): static
-    {
-        $this->id_pays = $id_pays;
-
-        return $this;
     }
 }
