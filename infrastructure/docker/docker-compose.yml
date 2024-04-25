@@ -37,6 +37,7 @@ services:
         environment:
             - POSTGRES_USER=app
             - POSTGRES_PASSWORD=app
+            - POSTGRES_DB=app
         volumes:
             - postgres-data:/var/lib/postgresql/data
             - ./services/sql:/docker-entrypoint-initdb.d  # Add this line. Replace './sql' with the path to your .sql file.

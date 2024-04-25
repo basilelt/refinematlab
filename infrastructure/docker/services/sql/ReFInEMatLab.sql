@@ -203,7 +203,7 @@ CREATE TABLE "consommable" (
   --
   "seuil" integer DEFAULT 0,
   "stock" integer DEFAULT 0,
-  "mail" varchar(254),
+  "mail" varchar(254)
 );
 
 CREATE TABLE "type_unite" (
