@@ -8,7 +8,7 @@ A Docker environment is provided and requires you to have these tools available:
 
  * Docker
  * Bash
- * PHP >= 8.1
+ * PHP >= 8.3
  * [Castor](https://github.com/jolicode/castor#installation)
 
 #### Castor
@@ -34,6 +34,7 @@ The Docker infrastructure provides a web stack with:
  - PostgreSQL
  - PHP
  - Traefik
+ - Webpack Encore
  - A container with some tooling:
    - Composer
    - Node
