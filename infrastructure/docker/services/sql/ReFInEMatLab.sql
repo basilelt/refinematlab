@@ -307,9 +307,9 @@ ALTER TABLE "document_information" ADD FOREIGN KEY ("id_consommable") REFERENCES
 
 ALTER TABLE "photo" ADD FOREIGN KEY ("id_appareil") REFERENCES "appareil" ("id");
 
-ALTER TABLE "entreprise_adresse" ADD FOREIGN KEY ("id_adresse") REFERENCES "adresse" ("id");
+ALTER TABLE "entreprise_adresse" ADD FOREIGN KEY ("id_adresse") REFERENCES "adresse" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "entreprise_adresse" ADD FOREIGN KEY ("id_entreprise") REFERENCES "entreprise" ("id");
+ALTER TABLE "entreprise_adresse" ADD FOREIGN KEY ("id_entreprise") REFERENCES "entreprise" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "adresse" ADD FOREIGN KEY ("id_localisation") REFERENCES "localisation" ("id");
 
