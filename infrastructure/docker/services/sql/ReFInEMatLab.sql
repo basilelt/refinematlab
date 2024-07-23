@@ -327,19 +327,19 @@ ALTER TABLE "intervention" ADD FOREIGN KEY ("id_externe_interne") REFERENCES "ex
 
 ALTER TABLE "intervention" ADD FOREIGN KEY ("id_responsable") REFERENCES "personne" ("id");
 
-ALTER TABLE "intervention" ADD FOREIGN KEY ("id_appareil") REFERENCES "appareil" ("id");
+ALTER TABLE "intervention" ADD FOREIGN KEY ("id_appareil") REFERENCES "appareil" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "intervention" ADD FOREIGN KEY ("id_type_intervention") REFERENCES "type_intervention" ("id");
 
 ALTER TABLE "intervention" ADD FOREIGN KEY ("id_mode_intervention") REFERENCES "mode_intervention" ("id");
 
-ALTER TABLE "realise" ADD FOREIGN KEY ("id_intervention") REFERENCES "intervention" ("id");
+ALTER TABLE "realise" ADD FOREIGN KEY ("id_intervention") REFERENCES "intervention" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "realise" ADD FOREIGN KEY ("id_personne") REFERENCES "personne" ("id");
 
 ALTER TABLE "catalogue_consommable" ADD FOREIGN KEY ("id_entreprise") REFERENCES "entreprise" ("id");
 
-ALTER TABLE "catalogue_consommable" ADD FOREIGN KEY ("id_consommable") REFERENCES "consommable" ("id");
+ALTER TABLE "catalogue_consommable" ADD FOREIGN KEY ("id_consommable") REFERENCES "consommable" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "consommable" ADD FOREIGN KEY ("id_localisation_labo") REFERENCES "localisation_labo" ("id");
 
@@ -347,7 +347,7 @@ ALTER TABLE "consommable" ADD FOREIGN KEY ("id_type_unite") REFERENCES "type_uni
 
 ALTER TABLE "code_barre" ADD FOREIGN KEY ("id_consommable") REFERENCES "consommable" ("id");
 
-ALTER TABLE "commande" ADD FOREIGN KEY ("id_consommable") REFERENCES "consommable" ("id");
+ALTER TABLE "commande" ADD FOREIGN KEY ("id_consommable") REFERENCES "consommable" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "commande" ADD FOREIGN KEY ("id_entreprise") REFERENCES "entreprise" ("id");
 
