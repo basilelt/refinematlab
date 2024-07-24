@@ -148,7 +148,8 @@ CREATE TABLE "intervention" (
   "date_debut" timestamptz NOT NULL CHECK ("date_debut" BETWEEN '1950-01-01'::timestamptz AND CURRENT_TIMESTAMP),
   "date_fin" timestamptz CHECK ("date_fin" BETWEEN '1950-01-01'::timestamptz AND CURRENT_TIMESTAMP),
   --
-  "rapport" varchar(260)
+  "rapport" varchar(260),
+  "description" text
 );
 
 CREATE TABLE "type_intervention" (
@@ -194,7 +195,7 @@ CREATE TABLE "consommable" (
   "description" text,
   "dimension" varchar(255),
   --
-  "quantite_par_lot" smallint CHECK (quantite_par_lot >= 0) DEFAULT 0,
+  "quantite_par_unite" smallint CHECK (quantite_par_unite >= 0) DEFAULT 0,
   --
   "seuil" integer DEFAULT 0,
   "stock" integer DEFAULT 0,
@@ -217,7 +218,6 @@ CREATE TABLE "commande" (
   "id_consommable" integer NOT NULL,
   "id_entreprise" integer NOT NULL,
   --
-  "prix_unitaire" double precision NOT NULL CHECK (prix_unitaire >= 0) DEFAULT 0,
   "nombre_lot" smallint NOT NULL CHECK (nombre_lot >= 0) DEFAULT 0,
   "date_commande" timestamptz NOT NULL CHECK ("date_reception" BETWEEN '1950-01-01'::timestamptz AND CURRENT_TIMESTAMP),
   --
@@ -231,7 +231,7 @@ CREATE OR REPLACE FUNCTION update_stock() RETURNS TRIGGER AS $$
 BEGIN
   IF NEW.date_reception <= CURRENT_DATE AND NEW.reception = true THEN
     UPDATE consommable
-    SET stock = stock + (NEW.nombre_lot * (SELECT quantite_par_lot FROM consommable WHERE id = NEW.id_consommable))
+    SET stock = stock + (NEW.nombre_lot * (SELECT quantite_par_unite FROM consommable WHERE id = NEW.id_consommable))
     WHERE id = NEW.id_consommable;
   END IF;
   RETURN NEW;
