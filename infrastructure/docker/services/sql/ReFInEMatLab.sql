@@ -199,7 +199,7 @@ CREATE TABLE "consommable" (
   --
   "seuil" integer DEFAULT 0,
   "stock" integer DEFAULT 0,
-  "mail" varchar(254)
+  "mail" varchar(254),
 );
 
 CREATE TABLE "type_unite" (
@@ -224,6 +224,7 @@ CREATE TABLE "commande" (
   "reception" boolean NOT NULL DEFAULT false,
   --
   "date_reception" timestamptz CHECK ("date_reception" BETWEEN '1950-01-01'::timestamptz AND CURRENT_TIMESTAMP)
+  "date_creation" timestamptz NOT NULL CHECK ("date_creation" BETWEEN '1950-01-01'::timestamptz AND CURRENT_TIMESTAMP)
   --
 );
 -- Create a trigger function to update the stock of a consommable when a command is received
