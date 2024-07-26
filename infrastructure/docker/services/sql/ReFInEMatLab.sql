@@ -183,7 +183,7 @@ CREATE TABLE "catalogue_consommable" (
   "id_entreprise" integer NOT NULL,
   "id_consommable" integer NOT NULL,
   --
-  "prix" double precision NOT NULL CHECK (prix >= 0) DEFAULT 0
+  "prix" double precision NOT NULL CHECK (prix >= 0) DEFAULT 0,
   "date_creation" timestamptz NOT NULL CHECK ("date_creation" BETWEEN '1950-01-01'::timestamptz AND CURRENT_TIMESTAMP)
   --
 );
@@ -200,7 +200,7 @@ CREATE TABLE "consommable" (
   --
   "seuil" integer DEFAULT 0,
   "stock" integer DEFAULT 0,
-  "mail" varchar(254),
+  "mail" varchar(254)
 );
 
 CREATE TABLE "type_unite" (
@@ -346,10 +346,6 @@ ALTER TABLE "consommable" ADD FOREIGN KEY ("id_localisation_labo") REFERENCES "l
 ALTER TABLE "consommable" ADD FOREIGN KEY ("id_type_unite") REFERENCES "type_unite" ("id");
 
 ALTER TABLE "code_barre" ADD FOREIGN KEY ("id_consommable") REFERENCES "consommable" ("id");
-
-ALTER TABLE "commande" ADD FOREIGN KEY ("id_consommable") REFERENCES "consommable" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "commande" ADD FOREIGN KEY ("id_entreprise") REFERENCES "entreprise" ("id");
 
 ALTER TABLE "document_financier" ADD FOREIGN KEY ("id_intervention") REFERENCES "intervention" ("id");
 
